@@ -1,6 +1,5 @@
 - name: provision
   hosts: all
-  become: yes
   gather_facts: true
   max_fail_percentage: 0
   vars:
@@ -12,16 +11,19 @@
       - zsh
   tasks:
     - name: set timezone to Asia/Tokyo
+      become: yes
       timezone:
         name: Asia/Tokyo
 
     - name: install packages (rhel)
+      become: yes
       yum:
         name: "{{ packages }}"
         state: latest
       when: ansible_os_family == "RedHat"
 
     - name: install packages (debian)
+      become: yes
       apt:
         name: "{{ packages }}"
         state: latest
@@ -63,6 +65,7 @@
           value: "{{ git_email }}"
 
     - name: enable zsh
+      become: yes
       user:
         name: vagrant
         shell: /bin/zsh
